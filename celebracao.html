@@ -107,12 +107,10 @@
   <h1>Sim! Agora somos oficialmente namorados ❤️</h1>
   <p id="typed"></p>
 
-  <div id="contador"></div>
-
   <div class="gallery">
-    <img src="imagens/foto1.jpeg" alt="Nós dois">
-    <img src="imagens/foto2.jpeg" alt="Momentos felizes">
-    <img src="imagens/foto3.jpeg" alt="Mais amor">
+    <img src="./imagens/foto1.jpeg" alt="Nós dois">
+    <img src="./imagens/foto2.jpeg" alt="Momentos felizes">
+    <img src="./imagens/foto3.jpeg" alt="Mais amor">
   </div>
 
   <!-- Lightbox -->
@@ -138,7 +136,7 @@
         }
       });
     });
-
+<div id="contador">
     // Contador de dias
     const contador = document.getElementById('contador');
     const dataInicio = new Date("2026-01-09"); // coloque a data que vocês se conheceram
@@ -146,7 +144,7 @@
     const diffTime = Math.abs(hoje - dataInicio);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     contador.innerHTML = `Já se passaram <strong>${diffDays}</strong> dias desde que nos conhecemos 💕`;
-
+</div>
     // Texto digitado (efeito máquina de escrever)
     function typeWriter(element, text, i=0) {
       if (i < text.length) {
@@ -210,4 +208,5 @@
   </script>
 </body>
 </html>
+
 
