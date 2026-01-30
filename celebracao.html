@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nossa História ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(270deg, #1f1c2c, #928dab, #6a82fb, #fc5c7d);
+      background-size: 800% 800%;
+      animation: gradientBG 20s ease infinite;
+      color: #fff;
+    }
+
+    h1, p {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1s ease;
+    }
+
+    .visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      width: 90%;
+      margin: 40px auto;
+    }
+
+    .gallery img {
+      width: 100%;
+      border-radius: 15px;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      cursor: pointer;
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    .gallery img.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    }
+
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: #fff;
+      background: rgba(0,0,0,0.5);
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+
+    .prev { left: 30px; }
+    .next { right: 30px; }
+
+    #contador {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-top: 20px;
+    }
+
+    @keyframes gradientBG {
+      0% {background-position:0% 50%}
+      50% {background-position:100% 50%}
+      100% {background-position:0% 50%}
+    }
+  </style>
+</head>
+<body>
+  <h1>Sim! Agora somos oficialmente namorados ❤️</h1>
+  <p id="typed"></p>
+
+  <div id="contador"></div>
+
+  <div class="gallery">
+    <img src="./imagens/foto1.jpeg" alt="Nós dois">
+    <img src="./imagens/foto2.jpeg" alt="Momentos felizes">
+    <img src="./imagens/foto3.jpeg" alt="Mais amor">
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="nav-btn prev">⟨</button>
+    <img src="" alt="Foto ampliada">
+    <button class="nav-btn next">⟩</button>
+  </div>
+
+  <!-- Música festiva -->
+  <audio autoplay loop>
+    <source src="musica_festiva.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Scroll suave com efeitos
+    const elements = document.querySelectorAll('h1, p, .gallery img');
+    window.addEventListener('scroll', () => {
+      elements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if(rect.top < window.innerHeight - 100) {
+          el.classList.add('visible');
+        }
+      });
+    });
+
+    // Contador de dias
+    const contador = document.getElementById('contador');
+    const dataInicio = new Date("2026-01-09"); // coloque a data que vocês se conheceram
+    const hoje = new Date();
+    const diffTime = Math.abs(hoje - dataInicio);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    contador.innerHTML = `Já se passaram <strong>${diffDays}</strong> dias desde que nos conhecemos 💕`;
+
+    // Texto digitado (efeito máquina de escrever)
+    function typeWriter(element, text, i=0) {
+      if (i < text.length) {
+        element.innerHTML += text.charAt(i);
+        setTimeout(() => typeWriter(element, text, i+1), 50);
+      }
+    }
+    const typed = document.getElementById('typed');
+    typeWriter(typed, "Este site é só o começo da nossa história juntos. Cada momento ao seu lado é único.");
+
+    // Lightbox com navegação
+    const galleryImages = document.querySelectorAll('.gallery img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = lightbox.querySelector('img');
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+
+    let currentIndex = 0;
+
+    function showImage(index) {
+      lightboxImg.src = galleryImages[index].src;
+      lightbox.classList.add('active');
+      currentIndex = index;
+    }
+
+    galleryImages.forEach((img, index) => {
+      img.addEventListener('click', () => showImage(index));
+    });
+
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+      showImage(currentIndex);
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex + 1) % galleryImages.length;
+      showImage(currentIndex);
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.classList.remove('active');
+      }
+    });
+
+    // Navegação por teclado
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'ArrowLeft') {
+        currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+        showImage(currentIndex);
+      } else if (e.key === 'ArrowRight') {
+        currentIndex = (currentIndex + 1) % galleryImages.length;
+        showImage(currentIndex);
+      } else if (e.key === 'Escape') {
+        lightbox.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
