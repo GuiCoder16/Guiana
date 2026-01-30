@@ -98,8 +98,9 @@
 
   <!-- Música de fundo -->
   <audio id="bg-music" autoplay loop>
-    <source src="musica.mp3" type="audio/mpeg">
-  </audio>
+  <source src="músicas/musica.mp3" type="audio/mpeg">
+</audio>
+
 
   <script>
     const noBtn = document.querySelector('.no');
@@ -112,7 +113,7 @@
     function goCelebration(e) {
       fireworks(e.clientX, e.clientY);
       const music = document.getElementById('bg-music');
-      music.src = "musica_festiva.mp3";
+      music.src = "./músicas/musica_festiva.mp3";
       music.play();
       setTimeout(() => window.location.href = 'celebracao.html', 2000);
     }
@@ -122,6 +123,10 @@
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
 
     let hearts = [];
     function Heart(x, y, size, speed) {
